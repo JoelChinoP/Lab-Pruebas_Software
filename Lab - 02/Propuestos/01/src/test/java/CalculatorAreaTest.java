@@ -4,25 +4,72 @@ import example.CalculatorArea;
 import org.junit.Test;
 
 public class CalculatorAreaTest {
-    private final CalculatorArea calc = new CalculatorArea();
+    private final CalculatorArea calculator = new CalculatorArea();
 
     @Test
-    public void testAddPositive() {
-        assertEquals("5 + 7 debe ser 12", 12, calc.calculateRectangleArea(5, 7));
+    public void testCalculateRectangleAreaWithIntegers() {
+        String result = calculator.calculateRectangleArea("5", "7");
+        assertTrue(result.contains("base: 5"));
+        assertTrue(result.contains("altura: 7"));
+        assertTrue(result.contains("Área calculada: 35"));
     }
 
     @Test
-    public void testAddNegative() {
-        assertEquals("-3 + 1 debe ser -2", -2, calc.calculateRectangleArea()-3, 1));
+    public void testCalculateRectangleAreaWithDecimals() {
+        String result = calculator.calculateRectangleArea("3.5", "2.5");
+        assertTrue(result.contains("base: 3.5"));
+        assertTrue(result.contains("altura: 2.5"));
+        assertTrue(result.contains("Área calculada: 8.75"));
     }
 
     @Test
-    public void testSubtract() {
-        assertEquals("10 - 4 debe ser 6", 6, calc.subtract(10, 4));
+    public void testCalculateRectangleAreaWithCommaDecimals() {
+        // Prueba con números que usan coma como separador decimal
+        String result = calculator.calculateRectangleArea("2,5", "4,0");
+        assertTrue(result.contains("base: 2.5"));
+        assertTrue(result.contains("altura: 4.0") || result.contains("altura: 4"));
+        assertTrue(result.contains("Área calculada: 10"));
     }
 
     @Test
-    public void testSubtractNegativeResult() {
-        assertEquals("2 - 5 debe ser -3", -3, calc.subtract(2, 5));
+    public void testCalculateRectangleAreaWithZeroValue() {
+        String result = calculator.calculateRectangleArea("0", "5");
+        assertTrue(result.contains("Error: La base y la altura deben ser valores positivos"));
+    }
+
+    @Test
+    public void testCalculateRectangleAreaWithNegativeValue() {
+        String result = calculator.calculateRectangleArea("-3", "2");
+        assertTrue(result.contains("Error: La base y la altura deben ser valores positivos"));
+    }
+
+    @Test
+    public void testCalculateRectangleAreaWithNonNumericInput() {
+        String result = calculator.calculateRectangleArea("abc", "5");
+        assertTrue(result.contains("Error: Ingrese valores numéricos válidos"));
+    }
+
+    @Test
+    public void testCalculateRectangleAreaWithEmptyInput() {
+        String result = calculator.calculateRectangleArea("", "5");
+        assertTrue(result.contains("Error: Ingrese valores numéricos válidos"));
+    }
+
+    @Test
+    public void testCalculateRectangleAreaWithNullInput() {
+        String result = calculator.calculateRectangleArea(null, "5");
+        assertTrue(result.contains("Error: Ingrese valores numéricos válidos"));
+    }
+
+    @Test
+    public void testCalculateRectangleAreaWithVeryLargeNumbers() {
+        String result = calculator.calculateRectangleArea("1000000", "2000000");
+        assertTrue(result.contains("Área calculada: 2000000000000"));
+    }
+
+    @Test
+    public void testCalculateRectangleAreaWithSmallDecimals() {
+        String result = calculator.calculateRectangleArea("0.1", "0.1");
+        assertTrue(result.contains("Área calculada: 0.01"));
     }
 }
